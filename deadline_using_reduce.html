@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highest Calorie Fruit Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+        }
+        .fruit-list {
+            margin: 15px 0;
+        }
+        .fruit-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .fruit-name {
+            font-weight: bold;
+        }
+        .fruit-calories {
+            color: #e74c3c;
+        }
+        .highest {
+            color: #27ae60;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find the Highest Calorie Fruit</h1>
+    
+    <div class="container">
+        <h2>Fruit Calorie Data</h2>
+        <div class="fruit-list" id="fruitList">
+            <!-- Fruit list will be populated by JavaScript -->
+        </div>
+        
+        <button id="findHighest">Find Highest Calorie Fruit</button>
+        
+        <div id="output">
+            Click the button to find the fruit with the highest calories.
+        </div>
+    </div>
+
+    <script>
+        // Our fruit data
+        const fruits = [
+            { name: 'Apple', calories: 95 },
+            { name: 'Banana', calories: 105 },
+            { name: 'Orange', calories: 62 },
+            { name: 'Mango', calories: 202 },
+            { name: 'Avocado', calories: 322 },
+            { name: 'Grapes', calories: 62 },
+            { name: 'Blueberries', calories: 84 },
+            { name: 'Pineapple', calories: 82 }
+        ];
+
+        // Display the fruit list
+        const fruitListElement = document.getElementById('fruitList');
+        
+        function displayFruits() {
+            fruitListElement.innerHTML = fruits.map(fruit => 
+                `<div class="fruit-item">
+                    <span class="fruit-name">${fruit.name}</span>
+                    <span class="fruit-calories">${fruit.calories} calories</span>
+                </div>`
+            ).join('');
+        }
+        
+        displayFruits();
+
+        // Find highest calorie fruit using reduce()
+        function findHighestCalorieFruit() {
+            const highestCalorieFruit = fruits.reduce((highest, currentFruit) => {
+                return (currentFruit.calories > highest.calories) ? currentFruit : highest;
+            });
+            
+            return highestCalorieFruit;
+        }
+
+        // Button click handler
+        document.getElementById('findHighest').addEventListener('click', function() {
+            const highestFruit = findHighestCalorieFruit();
+            
+            // Highlight the highest fruit in the list
+            const fruitItems = fruitListElement.querySelectorAll('.fruit-item');
+            fruitItems.forEach(item => {
+                item.classList.remove('highest');
+                if (item.querySelector('.fruit-name').textContent === highestFruit.name) {
+                    item.classList.add('highest');
+                }
+            });
+            
+            // Display the result
+            document.getElementById('output').innerHTML = `
+                <p>The highest calorie fruit is <strong>${highestFruit.name}</strong> with <strong>${highestFruit.calories} calories</strong>.</p>
+                <p><em>This was found using the <code>reduce()</code> method by comparing each fruit's calorie count.</em></p>
+            `;
+        });
+
+        // Explanation of how reduce() works
+        const explanation = `
+        <div class="container">
+            <h2>How reduce() Works</h2>
+            <p>The <code>reduce()</code> method executes a reducer function on each element of the array, resulting in a single output value.</p>
+            
+            <h3>In our case:</h3>
+            <pre><code>const highestCalorieFruit = fruits.reduce((highest, currentFruit) => {
+    return (currentFruit.calories > highest.calories) 
+        ? currentFruit 
+        : highest;
+});</code></pre>
+            
+            <p>This code:</p>
+            <ol>
+                <li>Starts with the first fruit as the initial highest value</li>
+                <li>Compares each fruit's calories with the current highest</li>
+                <li>Keeps whichever has higher calories</li>
+                <li>Returns the final highest after checking all fruits</li>
+            </ol>
+        </div>
+        `;
+        
+        // Add the explanation to the page
+        document.body.insertAdjacentHTML('beforeend', explanation);
+    </script>
+</body>
+</html>

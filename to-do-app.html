@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>to do app</title>
+  <style>
+    .input-container {
+      display: flex;
+      align-items: center;
+      margin: 20px;
+    }
+    input[type="text"] {
+      padding: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 6px 12px;
+      margin-left: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="input-container">
+    <input type="text" id="itemInput" placeholder="Enter item here">
+    <button onclick="addItem()">Add</button>
+  </div>
+
+  <script>
+    function addItem() {
+      const input = document.getElementById("itemInput");
+      const value = input.value.trim();
+      if (value !== "") {
+        console.log("Added item:", value);
+        input.value = ""; // Clear input box
+      } else {
+        console.log("Input is empty.");
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Traversal</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+            border: 2px solid orange;
+        }
+        .container {
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>DOM Traversal Examples</h1>
+    
+    <!-- Nested div structure -->
+    <div class="grandparent container">
+        Grandparent Div
+        <div class="parent container">
+            Parent Div
+            <div class="child container" id="firstChild">
+                First Child Div
+                <button class="child-btn">Child Button</button>
+            </div>
+            <div class="child container">
+                Second Child Div
+                <button class="child-btn">Toggle Parent Highlight</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Nested div structure and DOM tree explanation
+        /*
+          HTML Nesting: Creating hierarchical structures where elements contain other elements.
+          DOM Tree: The browser creates a Document Object Model tree representing the HTML structure,
+          where each element is a node with parent/child relationships.
+        */
+
+        // 2. Using parentElement to log a child's parent
+        /*
+          parentElement: Property that returns the parent node of an element (only if it's an element node)
+        */
+        const firstChild = document.getElementById('firstChild');
+        console.log("Parent of firstChild:", firstChild.parentElement);
+
+        // 3. Using .children to log all children of a div
+        /*
+          .children: Returns only element nodes (HTML elements)
+          .childNodes: Returns all node types (elements, text, comments, etc.)
+        */
+        const parentDiv = document.querySelector('.parent');
+        console.log("Children of parentDiv (element nodes only):", parentDiv.children);
+        console.log("ChildNodes of parentDiv (all nodes):", parentDiv.childNodes);
+
+        // 4. Using .closest() to find a parent with a class
+        /*
+          .closest(): Finds the nearest ancestor that matches a selector,
+          including the element itself. Useful for finding parent elements
+          in complex DOM structures.
+        */
+        const button = document.querySelector('.child-btn');
+        const grandparent = button.closest('.grandparent');
+        console.log("Found grandparent using closest():", grandparent);
+
+        // 5. Toggle a class on parent when clicking a child button
+        /*
+          Event listeners: Functions that wait for and respond to events (like clicks).
+          Class toggling: Adding/removing a class to change element styling/behavior.
+        */
+        const buttons = document.querySelectorAll('.child-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Find the parent container of the clicked button
+                const parentContainer = this.closest('.container');
+                
+                // Toggle the highlight class on the parent
+                if (parentContainer) {
+                    parentContainer.classList.toggle('highlight');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
